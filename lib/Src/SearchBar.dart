@@ -14,7 +14,7 @@ class AppSearchBar extends StatelessWidget {
     this.hintText = "Search...",
     this.prefixIcon = Icons.search,
     this.prefixIconColor = Colors.green,
-    this.fillColor = const Color(0xFFE0E0E0), // light grey default
+    this.fillColor = const Color.fromARGB(255, 255, 249, 249), // light grey default
     this.borderRadius = 60,
     this.controller,
     this.onChanged,

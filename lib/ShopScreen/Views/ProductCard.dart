@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends StatefulWidget {
   final String imageUrl;
   final String title;
   final double price;
   final double oldPrice;
   final String weight;
-  final bool isAdded;
 
   const ProductCard({
     super.key,
@@ -16,8 +15,14 @@ class ProductCard extends StatelessWidget {
     required this.price,
     required this.oldPrice,
     required this.weight,
-    this.isAdded = false,
   });
+
+  @override
+  State<ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
+  int quantity = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -31,28 +36,35 @@ class ProductCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image
-            Expanded(
-              child: Center(
-                child: Image.network(imageUrl, fit: BoxFit.contain),
-              ),
-            ),
+            // Product image
+           Expanded(
+  child: Center(
+    child: Image.asset(
+      widget.imageUrl,       // 👈 make sure this is an asset path like "assets/images/milk.png"
+      fit: BoxFit.contain,
+    ),
+  ),
+),
+
             const SizedBox(height: 6),
 
             // Title
             Text(
-              title,
+              widget.title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500),
+              style: GoogleFonts.poppins(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
             ),
             const SizedBox(height: 4),
 
-            // Price
+            // Price row
             Row(
               children: [
                 Text(
-                  "\$${price.toStringAsFixed(2)}",
+                  "\$${widget.price.toStringAsFixed(2)}",
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
@@ -61,7 +73,7 @@ class ProductCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  "\$${oldPrice.toStringAsFixed(2)}",
+                  "\$${widget.oldPrice.toStringAsFixed(2)}",
                   style: GoogleFonts.poppins(
                     fontSize: 11,
                     color: Colors.grey,
@@ -70,51 +82,118 @@ class ProductCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 4),
 
-            // Weight
-            Text(
-              weight,
-              style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey),
-            ),
-            const SizedBox(height: 6),
-
-            // Add button
-            isAdded
-                ? Container(
-                    decoration: BoxDecoration(
-                      color: Colors.green.shade50,
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.remove, color: Colors.green, size: 18),
-                        const SizedBox(width: 6),
-                        Text("1",
-                            style: GoogleFonts.poppins(
-                                fontSize: 12, fontWeight: FontWeight.w500)),
-                        const SizedBox(width: 6),
-                        const Icon(Icons.add, color: Colors.green, size: 18),
-                      ],
-                    ),
-                  )
-                : ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      minimumSize: const Size(double.infinity, 32),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                    ),
-                    child: Text(
-                      "Add",
-                      style: GoogleFonts.poppins(
-                          fontSize: 12, color: Colors.white),
-                    ),
+            // Weight + Add/Qty controls in same row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  widget.weight,
+                  style: GoogleFonts.poppins(
+                    fontSize: 11,
+                    color: Colors.grey,
                   ),
+                ),
+
+                // Add or qty buttons
+                quantity == 0
+                    ? ElevatedButton(
+  onPressed: () {
+    setState(() {
+      quantity = 1;
+    });
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Color(0xff5AC268),
+    minimumSize: const Size(55, 26), // 👈 small width & height
+    padding: EdgeInsets.zero,        // remove extra padding
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(4), // match tiny containers
+    ),
+  ),
+  child: Text(
+    "Add",
+    style: GoogleFonts.poppins(
+      fontSize: 11,        // smaller font
+      color: Colors.white,
+      fontWeight: FontWeight.w500,
+    ),
+  ),
+)
+
+
+
+                      
+                     : Row(
+  children: [
+    // - button (tiny)
+    Container(
+      width: 22,
+      height: 22,
+      decoration: BoxDecoration(
+        color: Colors.green,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: IconButton(
+        padding: EdgeInsets.zero,
+        icon: const Icon(Icons.remove, size: 14, color: Colors.white),
+        onPressed: () {
+          setState(() {
+            if (quantity > 1) {
+              quantity--;
+            } else {
+              quantity = 0;
+            }
+          });
+        },
+      ),
+    ),
+    const SizedBox(width: 3),
+
+    // qty box (tiny)
+    Container(
+      width: 22,
+      height: 22,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.green, width: 1),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Text(
+        "$quantity",
+        style: GoogleFonts.poppins(
+          fontSize: 11,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    ),
+    const SizedBox(width: 3),
+
+    // + button (tiny)
+    Container(
+      width: 22,
+      height: 22,
+      decoration: BoxDecoration(
+        color: Colors.green,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: IconButton(
+        padding: EdgeInsets.zero,
+        icon: const Icon(Icons.add, size: 14, color: Colors.white),
+        onPressed: () {
+          setState(() {
+            quantity++;
+          });
+        },
+      ),
+    ),
+  ],
+),
+
+
+
+              ],
+            ),
           ],
         ),
       ),

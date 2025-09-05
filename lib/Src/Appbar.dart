@@ -19,7 +19,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
         style: const TextStyle(
           color: Color(0xff23AA49
           ),
-          fontSize: 25,
+          fontSize: 23,
           fontFamily: "Raleway",
           fontWeight: FontWeight.bold,
         ),

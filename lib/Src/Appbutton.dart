@@ -7,9 +7,8 @@ class AppButton extends StatelessWidget {
   final Color textColor;
   final double radius;
   final EdgeInsets padding;
-  final double? width;   // optional width
-  final double? height;  // optional height
-
+  final double? width;  
+  final double? height;  
   const AppButton({
     super.key,
     required this.text,

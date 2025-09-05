@@ -2,12 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qykcart/CartScreen/CartScreen.dart';
+import 'package:qykcart/CreditScreen/CreditScreen.dart';
 import 'package:qykcart/HomeScreen/Views/OfferBanner.dart';
 import 'package:qykcart/HomeScreen/Views/QuickactionCard.dart';
 import 'package:qykcart/HomeScreen/Views/StoreCard.dart';
+import 'package:qykcart/OrderScreen/OrderScreen.dart';
 import 'package:qykcart/ProfileScreen/ProfileScreen.dart';
 import 'package:qykcart/ShopScreen/ShopScreen.dart';
 import 'package:qykcart/Src/AppBottombar.dart';
+import 'package:qykcart/Src/Appbar.dart';
 import 'package:qykcart/Src/Apptext.dart';
 import 'package:qykcart/Src/SearchBar.dart';
 
@@ -52,23 +55,15 @@ class HomeContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: const Text(
+      appBar: AppAppBar(
+      
+        title: 
           "QykCart",
-          style: TextStyle(
-            color: Colors.green,
-            fontWeight: FontWeight.bold,
-          ),
+         
+          
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_none, color: Colors.black),
-            onPressed: () {},
-          ),
-        ],
-      ),
+       
+      
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -116,28 +111,39 @@ class HomeContent extends StatelessWidget {
             const SizedBox(height: 8),
 
             Row(
-              children: [
-                Expanded(
-                  child: QuickActionCard(
-                    imagePath: "assets/icon.png",
-                    title: "My Order",
-                    subtitle: "View your orders",
-                    borderColor: Color(0xff8DC59D),
-                    onTap: () {},
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: QuickActionCard(
-                    imagePath: "assets/icon.png",
-                    title: "My Credits",
-                    subtitle: "Pending credits",
-                    borderColor: Color(0xffE1E390),
-                    onTap: () {},
-                  ),
-                ),
-              ],
-            ),
+  children: [
+    Expanded(
+      child: QuickActionCard(
+        imagePath: "assets/icon.png",
+        title: "My Order",
+        subtitle: "View your orders",
+        borderColor: const Color(0xff8DC59D),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const OrderScreen()),
+          );
+        },
+      ),
+    ),
+    const SizedBox(width: 12),
+    Expanded(
+      child: QuickActionCard(
+        imagePath: "assets/icon.png",
+        title: "My Credits",
+        subtitle: "Pending credits",
+        borderColor: const Color(0xffE1E390),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const CreditScreen()),
+          );
+        },
+      ),
+    ),
+  ],
+),
+
 
             const SizedBox(height: 20),
             const AppText(
