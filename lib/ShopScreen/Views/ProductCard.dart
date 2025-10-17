@@ -36,19 +36,15 @@ class _ProductCardState extends State<ProductCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Product image
-           Expanded(
-  child: Center(
-    child: Image.asset(
-      widget.imageUrl,       // 👈 make sure this is an asset path like "assets/images/milk.png"
-      fit: BoxFit.contain,
-    ),
-  ),
-),
-
+            Expanded(
+              child: Center(
+                child: Image.asset(
+                  widget.imageUrl,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
             const SizedBox(height: 6),
-
-            // Title
             Text(
               widget.title,
               maxLines: 2,
@@ -59,8 +55,6 @@ class _ProductCardState extends State<ProductCard> {
               ),
             ),
             const SizedBox(height: 4),
-
-            // Price row
             Row(
               children: [
                 Text(
@@ -82,116 +76,73 @@ class _ProductCardState extends State<ProductCard> {
                 ),
               ],
             ),
-
-            // Weight + Add/Qty controls in same row
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   widget.weight,
-                  style: GoogleFonts.poppins(
-                    fontSize: 11,
-                    color: Colors.grey,
-                  ),
+                  style: GoogleFonts.poppins(fontSize: 11, color: Colors.grey),
                 ),
-
-                // Add or qty buttons
                 quantity == 0
                     ? ElevatedButton(
-  onPressed: () {
-    setState(() {
-      quantity = 1;
-    });
-  },
-  style: ElevatedButton.styleFrom(
-    backgroundColor: Color(0xff5AC268),
-    minimumSize: const Size(55, 26), // 👈 small width & height
-    padding: EdgeInsets.zero,        // remove extra padding
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(4), // match tiny containers
-    ),
-  ),
-  child: Text(
-    "Add",
-    style: GoogleFonts.poppins(
-      fontSize: 11,        // smaller font
-      color: Colors.white,
-      fontWeight: FontWeight.w500,
-    ),
-  ),
-)
-
-
-
-                      
-                     : Row(
-  children: [
-    // - button (tiny)
-    Container(
-      width: 22,
-      height: 22,
-      decoration: BoxDecoration(
-        color: Colors.green,
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: IconButton(
-        padding: EdgeInsets.zero,
-        icon: const Icon(Icons.remove, size: 14, color: Colors.white),
-        onPressed: () {
-          setState(() {
-            if (quantity > 1) {
-              quantity--;
-            } else {
-              quantity = 0;
-            }
-          });
-        },
-      ),
-    ),
-    const SizedBox(width: 3),
-
-    // qty box (tiny)
-    Container(
-      width: 22,
-      height: 22,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.green, width: 1),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Text(
-        "$quantity",
-        style: GoogleFonts.poppins(
-          fontSize: 11,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    ),
-    const SizedBox(width: 3),
-
-    // + button (tiny)
-    Container(
-      width: 22,
-      height: 22,
-      decoration: BoxDecoration(
-        color: Colors.green,
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: IconButton(
-        padding: EdgeInsets.zero,
-        icon: const Icon(Icons.add, size: 14, color: Colors.white),
-        onPressed: () {
-          setState(() {
-            quantity++;
-          });
-        },
-      ),
-    ),
-  ],
-),
-
-
-
+                        onPressed: () {
+                          setState(() {
+                            quantity = 1;
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xff5AC268),
+                          minimumSize: const Size(55, 26),
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        child: Text(
+                          "Add",
+                          style: GoogleFonts.poppins(
+                            fontSize: 11,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      )
+                    : Row(
+                        children: [
+                          _qtyButton(Icons.remove, () {
+                            setState(() {
+                              if (quantity > 1) {
+                                quantity--;
+                              } else {
+                                quantity = 0;
+                              }
+                            });
+                          }),
+                          const SizedBox(width: 3),
+                          Container(
+                            width: 22,
+                            height: 22,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.green, width: 1),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              "$quantity",
+                              style: GoogleFonts.poppins(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 3),
+                          _qtyButton(Icons.add, () {
+                            setState(() {
+                              quantity++;
+                            });
+                          }),
+                        ],
+                      ),
               ],
             ),
           ],
@@ -199,4 +150,21 @@ class _ProductCardState extends State<ProductCard> {
       ),
     );
   }
+
+  Widget _qtyButton(IconData icon, VoidCallback onPressed) {
+    return Container(
+      width: 22,
+      height: 22,
+      decoration: BoxDecoration(
+        color: Colors.green,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: IconButton(
+        padding: EdgeInsets.zero,
+        icon: Icon(icon, size: 14, color: Colors.white),
+        onPressed: onPressed,
+      ),
+    );
+  }
 }
+ 

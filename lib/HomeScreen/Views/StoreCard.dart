@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:qykcart/ShopScreen/ShopProductScreen.dart';
 
 class StoreCard extends StatelessWidget {
+  final String id;
   final String name;
   final String category;
   final String location;
-  final String imagePath; // asset image
+  final String imagePath;
   final bool deliveryAvailable;
 
   const StoreCard({
     super.key,
+    required this.id,
     required this.name,
     required this.category,
     required this.location,
@@ -19,15 +22,11 @@ class StoreCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(onTap: () {
-        // Navigate to shop screen
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const ShopProductScreen(), // Replace with your ShopScreen
-          ),
-        );
-      },
+    return GestureDetector(
+      onTap: () {
+  Get.to(() => ShopProductScreen(shopId: id));
+},
+
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 6),
         height: 100,
@@ -43,7 +42,6 @@ class StoreCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            // Left side image (no padding, full height)
             ClipRRect(
               borderRadius: const BorderRadius.only(
                 topRight: Radius.circular(12),
@@ -56,15 +54,10 @@ class StoreCard extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-      
-            // Right side details (with only right-side curves)
             Expanded(
               child: Container(
-               padding: const EdgeInsets.only(left:15),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  
-                ),
+                padding: const EdgeInsets.only(left: 15),
+                decoration: const BoxDecoration(color: Colors.white),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -79,13 +72,8 @@ class StoreCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       category,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.black87,
-                      ),
+                      style: const TextStyle(fontSize: 14, color: Colors.black87),
                     ),
-      
-                    // Location + Delivery Badge row
                     Row(
                       children: [
                         Expanded(
@@ -100,7 +88,7 @@ class StoreCard extends StatelessWidget {
                         ),
                         if (deliveryAvailable)
                           Container(
-                            padding:  EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 6, vertical: 6),
                             decoration: BoxDecoration(
                               color: Colors.green,

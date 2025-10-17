@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:qykcart/HomeScreen/HomeScreen.dart';
+import 'package:get/get.dart';
+import 'package:qykcart/LoginScreen/OtpScreen.dart';
+import 'package:qykcart/LoginScreen/Services/authcontroller.dart';
 import 'package:qykcart/Src/Appbutton.dart';
 import 'package:qykcart/Src/Apptext.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+   LoginScreen({super.key});
+
+  final AuthController authController = Get.put(AuthController());
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -57,6 +62,7 @@ class LoginScreen extends StatelessWidget {
 Padding(
   padding: const EdgeInsets.symmetric(horizontal: 25.0),
   child: TextField(
+    controller: authController.phoneController,
     keyboardType: TextInputType.phone,
     decoration: const InputDecoration(
       prefixText: "+44 ",
@@ -82,9 +88,9 @@ Padding(
                 child: AppButton(
                 text: "Continue",
                 onPressed: () {
-                  Navigator.push(context,MaterialPageRoute(builder: (context)=>HomeScreen()));
-                  // Navigate to Shop screen
-                },
+                        authController.sendOtp();
+                      },
+
                 height: 53.h,width: 335.w,
                             ),
               ),

@@ -155,13 +155,15 @@ class HomeContent extends StatelessWidget {
             const SizedBox(height: 8),
 
             StoreCard(
+              id: '',
               name: "Gouri Stores",
               category: "Grocery Shop | Fancy",
               location: "Karuvatta | Haripad | Kerala",
               imagePath: "assets/store1.png",
-              deliveryAvailable: true,
+              deliveryAvailable: true, 
             ),
             StoreCard(
+               id: '',
               name: "Reemus Stores",
               category: "Grocery Shop | Fancy",
               location: "Tirur | Malappuram | Kerala",

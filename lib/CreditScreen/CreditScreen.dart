@@ -22,11 +22,12 @@ class _CreditScreenState extends State<CreditScreen> {
         children: [
           SizedBox(height: 10,),
         StoreCard(
+          id: '',
               name: "Gouri Stores",
               category: "Grocery Shop | Fancy",
               location: "Karuvatta | Haripad | Kerala",
               imagePath: "assets/store1.png",
-              deliveryAvailable: true,
+              deliveryAvailable: true, 
             ),],
       
       ),

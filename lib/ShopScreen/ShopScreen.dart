@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:qykcart/HomeScreen/Views/StoreCard.dart';
+import 'package:qykcart/ShopScreen/Services/shopcontroller.dart';
 import 'package:qykcart/Src/Appbar.dart';
 import 'package:qykcart/Src/SearchBar.dart';
 
@@ -12,47 +13,52 @@ class ShopScreen extends StatefulWidget {
 }
 
 class _ShopScreenState extends State<ShopScreen> {
+  final ShopController controller = Get.put(ShopController());
+
+  @override
+  void initState() {
+    super.initState();
+    controller.fetchShops();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppAppBar(title:"Shops"),
-      body: SingleChildScrollView(
+      appBar: AppAppBar(title: "Shops"),
+      body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const AppSearchBar(hintText: "Search Category",),
-            SizedBox(height: 17.h),
-            StoreCard(
-              name: "Gouri Stores",
-              category: "Grocery Shop | Fancy",
-              location: "Karuvatta | Haripad | Kerala",
-              imagePath: "assets/store1.png",
-              deliveryAvailable: true,
+            const AppSearchBar(hintText: "Search Category"),
+            const SizedBox(height: 17),
+            Expanded(
+              child: Obx(() {
+                if (controller.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (controller.shopList.isEmpty) {
+                  return const Center(child: Text("No shops available"));
+                }
+                return ListView.builder(
+                  itemCount: controller.shopList.length,
+                  itemBuilder: (context, index) {
+                    final shop = controller.shopList[index];
+                    return StoreCard(
+                      id: shop.id,
+                      name: shop.shopName,
+                      category: "Grocery Shop",
+                      location: "${shop.city}, ${shop.state}",
+                      imagePath: shop.shopImage,
+                      deliveryAvailable: shop.isDeliveryAvailable,
+                    );
+                  },
+                );
+              }),
             ),
-            StoreCard(
-              name: "Reemus Stores",
-              category: "Grocery Shop | Fancy",
-              location: "Tirur | Malappuram | Kerala",
-              imagePath: "assets/store2.png",
-              deliveryAvailable: true,
-            ),
-            StoreCard(
-              name: "Nayana Fancy Stores",
-              category: "Grocery Shop | Fancy",
-              location: "Tirur | Malappuram | Kerala",
-              imagePath: "assets/store3.png",
-              deliveryAvailable: true,
-            ),
-            StoreCard(
-              name: "Kutti Kada",
-              category: "Grocery Shop | Fancy",
-              location: "Kidanghoor| Chagnasheery| Kerala",
-              imagePath: "assets/store4.png",
-              deliveryAvailable: true,
-            ),
-            ],),),);
-
+          ],
+        ),
+      ),
+    );
   }
 }
